@@ -1,18 +1,18 @@
-# corekit
+# LunaOrbit
 
 A small, framework-agnostic JavaScript utility library.
 
-## Why corekit?
+## Why lunaorbit?
 - Zero dependencies
 - Works in browser and Node
 - No framework lock-in
 - Predictable APIs
 
 ## Installation
-npm install corekit
+npm install lunaorbit
 
 ## Quick Example
-import { retry } from "corekit/async"
+import { retry } from "lunaorbit/async"
 
 await retry(() => fetch(url), { retries: 3 })
 
