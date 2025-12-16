@@ -1,0 +1,197 @@
+# corekit
+
+A small, framework-agnostic JavaScript utility library you can use in **any environment**: browser, Node.js, or any framework.
+
+---
+
+## Philosophy
+
+corekit is designed to be:
+
+* **Framework-agnostic** – no React, Vue, or Node-only APIs
+* **Zero dependencies** – predictable and portable
+* **Boring and stable** – utilities you can trust
+* **Composable** – small functions that do one thing well
+
+Think of it as a *personal standard library* you bring to every project.
+
+---
+
+## Installation
+
+### Using npm
+
+```bash
+npm install corekit
+```
+
+### Using a script tag (UMD build)
+
+```html
+<script src="corekit.umd.js"></script>
+<script>
+  CoreKit.sleep(500).then(() => console.log("done"))
+</script>
+```
+
+---
+
+## Importing
+
+### ES Modules (recommended)
+
+```js
+import { retry, sleep } from "corekit"
+```
+
+### CommonJS (Node.js)
+
+```js
+const { retry, sleep } = require("corekit")
+```
+
+---
+
+## Async Utilities
+
+### `sleep(ms)`
+
+Pause execution for a number of milliseconds.
+
+```js
+await sleep(1000)
+```
+
+**Use cases**
+
+* Delays
+* Backoff logic
+* Testing
+
+---
+
+### `timeout(promise, ms)`
+
+Rejects if the promise does not resolve within the given time.
+
+```js
+await timeout(fetch(url), 3000)
+```
+
+---
+
+### `retry(fn, options)`
+
+Retries an async function if it fails.
+
+```js
+await retry(() => fetch(url), {
+  retries: 3,
+  delay: 500,
+  onRetry: (error, attempt) => {
+    console.log("Retry", attempt)
+  }
+})
+```
+
+**Options**
+
+| Name      | Description                | Default     |
+| --------- | -------------------------- | ----------- |
+| `retries` | Number of retries          | `3`         |
+| `delay`   | Delay between retries (ms) | `0`         |
+| `onRetry` | Callback after failure     | `undefined` |
+
+---
+
+### `createQueue(concurrency)`
+
+Limits how many async tasks run at the same time.
+
+```js
+const enqueue = createQueue(2)
+
+enqueue(() => fetch("/a"))
+enqueue(() => fetch("/b"))
+enqueue(() => fetch("/c"))
+```
+
+Only `concurrency` tasks run in parallel.
+
+---
+
+## Events
+
+### `createEmitter()`
+
+Creates a simple publish/subscribe event system.
+
+```js
+const bus = createEmitter()
+
+bus.on("login", user => {
+  console.log(user)
+})
+
+bus.emit("login", { id: 1 })
+```
+
+**Why use it?**
+
+* Decouple parts of your app
+* No framework dependency
+* Works everywhere
+
+---
+
+## Logging
+
+### `createLogger(namespace, options)`
+
+Creates a namespaced logger.
+
+```js
+const log = createLogger("auth", { level: "debug" })
+
+log.info("User logged in")
+log.warn("Token expired")
+```
+
+**Log levels**
+
+* `debug`
+* `info`
+* `warn`
+* `error`
+
+---
+
+## Usage Guidelines
+
+### When to add a new utility
+
+Add a function only if:
+
+* You copied the same logic at least **twice**
+* It is framework-independent
+* It can be explained in one sentence
+
+### When NOT to add
+
+* DOM helpers
+* Framework-specific code
+* Highly opinionated behavior
+
+---
+
+## Versioning
+
+* `0.x` – APIs may change
+* `1.0` – Stable core APIs
+* New features are additive only
+
+---
+
+## License
+
+MIT
